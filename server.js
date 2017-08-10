@@ -32,6 +32,6 @@ server.post('api/venues',    venue.post);	// Create a venue
 server.put('api/venues/:id', venue.put);		// Update a venue
 server.del('api/venues/:id', venue.del);		// Delete a venue
 
-server.listen(port, function() {
+server.listen(process.env.PORT||port, function() {
 	console.log("Listening on port "+port);
 });
