@@ -1,6 +1,6 @@
 var restify = require('restify');
-var users = require('./userController');
-var venue= require('./venueController');
+var users = require('./UserController');
+var venue= require('./VenueController');
 var port = 3000;
 
 var server = restify.createServer({
@@ -14,7 +14,7 @@ server.use(function(req, res, next) {
 	console.log("Request: "+req.method + ' ' +req.url);
 	return next();
 });
-
+ 
 // This is needed to use POST with body information
 server.use(restify.plugins.bodyParser());
 // Defining Endpoints:
