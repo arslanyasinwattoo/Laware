@@ -118,6 +118,69 @@ function VenueController() {
 		return next();
 	};
 
+	//get venues by name and if not in db fetch it 
+	//from google than stor it and send a copy of it to the user
+	that.getByType = function(req, res, next) {
+		 dbase.retrieveVenueByType(upperCase(req.params.name), function(venues) {
+			if(venues != null && venues.length!=0) {
+				console.log("in db");
+				res.send(200, venues);
+			} else {
+				var optionsGoogle = {
+   url: 'https://maps.googleapis.com/maps/api/place/textsearch/json?type='+req.params.name+'&location=49.883922,8.668215&radius=10000&key=AIzaSyDnL7pzp26SMbg7CUyoPtq2UOdrFusJ4VE',
+   headers: {
+     'User-Agent': 'request'
+   }
+ };
+			 request(optionsGoogle,function(error, response, body) {
+  				if (!error && response.statusCode == 200) {
+				var info = JSON.parse(body);
+				var data=info['results'];
+			 //	console.log(data+"not in for loop");
+				var re=[];
+			 	if(data !=null){
+			 	for(var i=0;i<data.length;i++){
+					var set=data[i]; 
+					//console.log("in for loop");
+					var geo=set['geometry'];
+					var location= geo['location'];
+			 		var venue = {
+						name : set['name'],
+						address:set['formatted_address'],
+						long:location['lng'],
+						lat:location['lat'],
+						category:set['types']
+				};	
+				dbase.saveVenue(venue, function(venue){
+			//	console.log('venue added: _id '+venue._id+' name:'+venue.name+' address:'+venue.address+' long:'+venue.long+' lat:'+venue.lat+' category:'+venue.category);
+			
+			});
+			re.push(venue);
+		//	console.log('venue added from request: _id '+venue._id+' name:'+venue.name+' address:'+venue.address+' long:'+venue.long+' lat:'+venue.lat+' category:'+venue.category);
+			}
+			}
+			 if(re !=null && typeof re !== 'undefined'){
+				res.send(200,re);
+				}
+				else{
+			res.send(404, "venue not found");
+			}
+				
+			
+   }else{
+	   console.log("Error:"+error);
+   }
+ });
+
+			// res.send(200,callback.body);
+			// res.send(200,request(optionsGoogle, callback));
+			}	  
+		});
+		
+		return next();
+	};
+
+
 	// Create a new venue
 	that.post = function(req, res, next) {
 
@@ -146,7 +209,19 @@ function VenueController() {
 		}
 		return next();
 	};
-	
+//het names and types for searching autocompletion
+	that.getNamesTypes = function(req, res, next) {
+		dbase.retrieveVenuesNamesTypes(function(venues) {
+			if(venues!=null){
+				res.send(200, venues);
+			}
+			
+		});		
+		return next();
+	};
+
+
+
 	// Update a venue
 	that.put = function(req, res, next) {
 		

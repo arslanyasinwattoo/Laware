@@ -1,6 +1,6 @@
 var restify = require('restify');
-var users = require('./UserController');
-var venue= require('./VenueController');
+var users = require('./userController');
+var venue= require('./venueController');
 var port = 3000;
 
 var server = restify.createServer({
@@ -26,12 +26,13 @@ server.put('api/users/:id', users.put);		// Update a users
 server.del('api/users/:id', users.del);		// Delete a users
 // Complete CRUD functionality for Venue
 server.get('api/venues',     venue.get);		// List of venue
+server.get('api/venues/search',venue.getNamesTypes);// unique types and names in the system
 server.get('api/venues/:id', venue.getById);	// Single venue by id
 server.get('api/venues/name/:name', venue.getByName);	// Single venue by name
+server.get('api/venues/type/:name', venue.getByType);
 server.post('api/venues',    venue.post);	// Create a venue
 server.put('api/venues/:id', venue.put);		// Update a venue
 server.del('api/venues/:id', venue.del);		// Delete a venue
-
 server.listen(process.env.PORT||port, function() {
 	console.log("Listening on port "+port);
 });

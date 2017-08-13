@@ -6,8 +6,9 @@ function mongoCRUD() {
 	that = this;
 	var collection;
 	
+	//mongo.connect("mongodb://localhost:27017/laware", function(err, db){
 	mongo.connect("mongodb://arslanyasinwattoo:Arslan-03144214002@laware-shard-00-00-xq7dc.mongodb.net:27017,laware-shard-00-01-xq7dc.mongodb.net:27017,laware-shard-00-02-xq7dc.mongodb.net:27017/Laware?ssl=true&replicaSet=Laware-shard-0&authSource=admin", function(err, db){
-		if(err) { 
+	if(err) { 
 			return console.dir(err); 
 		}
 		console.log("Connected to mongodb");
@@ -18,10 +19,8 @@ function mongoCRUD() {
 				console.log(err);
 			}
 		});
-		
 	});
 	
-
 	/**
 	*	Loads the student list from the database collection
 	*/
