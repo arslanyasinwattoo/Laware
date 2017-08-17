@@ -43,13 +43,7 @@ function VenueController() {
 				res.send(200, venue);
 				 
 			} else {
-				 venue = request(options, callback);
-				if(venue !=null){
-				res.send(200, venue);
-				}
-				else{
 				res.send(404, "venue not found");
-				}
 				
 			}
 		});

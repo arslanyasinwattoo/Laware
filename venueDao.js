@@ -18,8 +18,7 @@ mongo.connect("mongodb://arslanyasinwattoo:Arslan-03144214002@laware-shard-00-00
 				console.log(err);
 			}
 		});
-		
-	});
+		});
 	
 
 	/**
@@ -174,6 +173,7 @@ op4="establishment";
 		});
 		callback(true);
 	}
+	
 }
 
 module.exports = new mongoCRUD();

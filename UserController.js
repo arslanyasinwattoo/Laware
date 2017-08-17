@@ -36,7 +36,8 @@ function UserController() {
 				firstName : req.body.firstName,
 				lastName : req.body.lastName,
 				emailId : req.body.emailId,
-				password: req.body.password
+				password: req.body.password,
+				url:req.body.url
 			};			
 
 			dbase.saveUser(user, function(user){
@@ -55,7 +56,8 @@ function UserController() {
 			"firstName": req.params.firstName,
 			"lastName": req.params.lastName,
 			"emailId" : req.params.emailId,
-			"password": req.params.password
+			"password": req.params.password,
+			"url":req.params.url
 		
 		}
 		
