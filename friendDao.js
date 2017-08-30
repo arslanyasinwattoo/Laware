@@ -1,5 +1,7 @@
 var mongo  = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
+var async = require('asyncawait/async');
+var await = require('asyncawait/await');
 
 function mongoCRUD() {
 	
@@ -34,20 +36,21 @@ function mongoCRUD() {
 	/**
 	*	Loads the Friends list from the database collection
 	*/
-	that.retrieveFriends = function(id,callback) {
+	that.retrieveFriends = async(function(id,callback) {
         console.log("Retrieving friends list...");
 		friend = {	'id1':id,'pending':0};
 		friend2={'id2':id,'pending':0};	
         collection.find(friend).toArray(function(err, items) {
-		 collection.find(friend2).toArray(function(err, itemss) {
+		await(collection.find(friend2).toArray(function(err, itemss) {
 		for(var i=0;i<itemss.length;i++){
 					items.push(itemss[i]); 
 			}
 					callback(items); 
-		});
+		}))
 			
 		});
-	}
+
+	})
 	
 	/**
 	 * Retrieves a single friend
