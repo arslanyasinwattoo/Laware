@@ -40,7 +40,7 @@ function mongoCRUD() {
         console.log("Retrieving friends list...");
 		friend = {	'id1':id,'pending':0};
 		friend2={'id2':id,'pending':0};	
-        collection.find(friend).toArray(function(err, items) {
+      await(collection.find(friend).toArray(function(err, items) {
 		await(collection.find(friend2).toArray(function(err, itemss) {
 		for(var i=0;i<itemss.length;i++){
 					items.push(itemss[i]); 
@@ -48,7 +48,7 @@ function mongoCRUD() {
 					callback(items); 
 		}))
 			
-		});
+		}))
 
 	})
 	
