@@ -36,8 +36,10 @@ function mongoCRUD() {
 	 */ 
 	that.retrieveMessagesByFriendId = function(id, callback) {		
 		// create ObjectId as identification criterion
+		console.log("retrieveing messages");
 		friend = {	'friendsId':id};	
 		collection.find(friend).toArray(function(err, items) {
+			console.log("items"+items);
 			callback(items);
 		});		
 	}

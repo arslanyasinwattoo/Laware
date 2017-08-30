@@ -115,7 +115,8 @@ function VenueController() {
 	//get venues by name and if not in db fetch it 
 	//from google than stor it and send a copy of it to the user
 	that.getByType = function(req, res, next) {
-		 dbase.retrieveVenueByType(upperCase(req.params.name), function(venues) {
+		console.log("In type -------"+req.params.name);
+		 dbase.retrieveVenueByType(req.params.name, function(venues) {
 			if(venues != null && venues.length!=0) {
 				console.log("in db");
 				res.send(200, venues);

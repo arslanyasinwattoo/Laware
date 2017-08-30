@@ -30,7 +30,51 @@ function mongoCRUD() {
 			callback(items);
 		});
 	}
-	
+	/**
+	*	Loads the user list from by user anme or emailid  the database collection
+	*/
+	that.retrieveUsersByName = function(name,callback) {
+		console.log("Retrieving Users by name list...");
+		user = {	'emailId': new RegExp(name, 'i')
+				};	
+		user2={
+		'firstName':new RegExp(name, 'i')
+			};
+		user3={
+		'lastName':new RegExp(name, 'i')
+		};
+		
+		collection.find(user||user2||user3).toArray(function(err, items) {
+			callback(items);
+		});
+	}
+	/**
+	*returns user data if username and password is same 
+	*/
+	that.checkLogin = function(emailId,password,callback) {
+		console.log("checking  Users credentials...");
+		user = {	'emailId': emailId,
+					'password':password 
+			   };	
+		
+		collection.findOne(user,function(err, items) {
+			//console.log("items"+items);
+			callback(items);
+		});
+	}
+	/**
+	*returns user data if username and password is same 
+	*/
+	that.checkId = function(id,callback) {
+		console.log("checking  if User exists...");
+		console.log("id"+ id );
+		user = {"_id":new ObjectId(id)};	
+		
+		collection.findOne(user,function(err, items) {
+			//console.log("items"+items);
+			callback(items);
+		});
+	}
 	/**
 	 * Retrieves a single user
 	 */ 
@@ -63,7 +107,7 @@ function mongoCRUD() {
 	 */
 	that.updateUser = function(user, callback) {
 		collection.update({"_id":new ObjectId(user._id)}, 
-					      {$set:{firstName:user.firstName,lastName:user.lastName}}, {w:1}, 
+					      {$set:{password:user.password,url:user.url}}, {w:1}, 
 		function(err, result) {
 			if(err) {
 				console.log(err);
@@ -73,7 +117,7 @@ function mongoCRUD() {
 	}
 	
 	/**
-	 * Deleting Students
+	 * Deleting users
 	 */
 	that.deleteUser = function(id, callback) {
 		collection.remove({"_id":new ObjectId(id)}, function(err, result) {

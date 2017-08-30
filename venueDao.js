@@ -5,8 +5,8 @@ function mongoCRUD() {
 	
 	that = this;
 	var collection;
-//mongo.connect("mongodb://localhost:27017/laware", function(err, db){	
 mongo.connect("mongodb://arslanyasinwattoo:Arslan-03144214002@laware-shard-00-00-xq7dc.mongodb.net:27017,laware-shard-00-01-xq7dc.mongodb.net:27017,laware-shard-00-02-xq7dc.mongodb.net:27017/Laware?ssl=true&replicaSet=Laware-shard-0&authSource=admin", function(err, db){
+//	mongo.connect("mongodb://localhost:27017/laware", function(err, db){	
 		if(err) { 
 			return console.dir(err); 
 		}
@@ -58,44 +58,12 @@ mongo.connect("mongodb://arslanyasinwattoo:Arslan-03144214002@laware-shard-00-00
 	 */ 
 	that.retrieveVenueByType = function(type, callback) {		
 		// create ObjectId as identification criterion
-var op1,op2,op3,op4;		
-	if(type=="BreakFast") {
-op1="Food";
-op2="political";
-op3="point_of_interest";
-op4="cafe";
-	}
-else if(type=="Lunch"){
-op1="Food";
-op2="restaurant";
-op3="point_of_interest";
-op4="cafe";
-
-}
-else if(type=="Dinner"){
-op1="Food";
-op2="restaurant";
-op3="point_of_interest";
-op4="bar";
-	
-}else if(type=="night"){
-op1="bar";
-op2="club";
-op3="cafe";
-op4="political";
-	}else if(type=="coffee"){
-op1="political";
-op2="Food";
-op3="point_of_interest";
-op4="cafe";
-	}else if(type=="things"){
-op1="bar";
-op2="club";
-op3="cafe";
-op4="establishment";
-	}
-		venue = {	'category':new RegExp(type||op1||op2||op3||op4, 'i') };	
+		console.log("in venue by type");
+console.log("in ype "+type);
+		
+		venue = {	'category':type };
 		collection.find(venue).toArray(function(err, items) {
+			console.log(items);
 			callback(items);
 		});		
 	}

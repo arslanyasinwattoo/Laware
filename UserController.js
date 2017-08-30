@@ -3,7 +3,27 @@ var dbase = require("./userDao");
 function UserController() {
 
 	that = this;
-	
+	that.checkLogin = function(emailId,password,callback) {
+   console.log("checkin");
+		dbase.checkLogin(emailId,password,function(user){
+				//	res.send(200, users);
+				console.log("checking email"+user.emailId)
+				callback(user);
+
+		});		
+	};
+that.checkId = function(id,callback) {
+   console.log("check id");
+   console.log("id"+ id);
+		dbase.checkId(id,function(user){
+				//	res.send(200, users);
+			//	console.log("checking email"+user.emailId)
+				callback(user);
+
+		});		
+	};
+
+
 	// Get the list of all users
 	that.get = function(req, res, next) {
 		dbase.retrieveUsers(function(users) {
@@ -14,8 +34,26 @@ function UserController() {
 	
 	// Get single user
 	that.getById = function(req, res, next) {
+		console.log("in getby Id");
 		user = dbase.retrieveUser(req.params.id, function(user) {
 			if(user != null) {
+				res.send(200, user);
+			} else {
+				res.send(404, "user not found");
+			}
+		});
+		
+		return next();
+	};
+
+	// Get List of users by name 
+	that.getByName = function(req, res, next) {
+		console.log("in getbyName name");
+		user = dbase.retrieveUsersByName(req.params.name, function(user) {
+			if(user != null) {
+				user.forEach(function (item) {
+				console.log(item.emailId);
+				});
 				res.send(200, user);
 			} else {
 				res.send(404, "user not found");
@@ -29,7 +67,7 @@ function UserController() {
 	that.post = function(req, res, next) {
 
 		console.log(req.body);
-		if(!req.body.hasOwnProperty('firstName','lastName','emailId','password')) {
+		if(!req.body.hasOwnProperty('firstName','lastName','emailId','password','url')) {
 			res.send(500, "Insufficient parameters, firstName required!"); 	// Internal Server Error
 		} else {
 			var user = {
@@ -50,14 +88,14 @@ function UserController() {
 	
 	// Update a user
 	that.put = function(req, res, next) {
-		
+		console.log("in put "+req.params.firstName +" "+req.params.lastName+"password"+req.params.password);
 		user = {
-			"_id" : req.params.id,
-			"firstName": req.params.firstName,
-			"lastName": req.params.lastName,
-			"emailId" : req.params.emailId,
-			"password": req.params.password,
-			"url":req.params.url
+			"_id" : req.body.id,
+			"firstName": req.body.firstName,
+			"lastName": req.body.lastName,
+			"emailId" : req.body.emailId,
+			"password": req.body.password,
+			"url":req.body.url
 		
 		}
 		

@@ -1,4 +1,7 @@
 var dbase = require("./friendDao");
+var dblocation = require("./locationDao");
+var async = require('asyncawait/async');
+var await = require('asyncawait/await');
 
 function FriendController() {
 
@@ -6,12 +9,67 @@ function FriendController() {
 	
 	// Get the list of all Friend
 	that.get = function(req, res, next) {
-		dbase.retrieveFriends(req.params.id1,function(friends) {
+		console.log("get list of friends->"+req.params.id);
+		if(req.params.id!=null){
+	dbase.retrieveFriends(req.params.id,function(friends) {
 			res.send(200, friends);
 		});		
+		}
+	var friend=[];
+	res.send(200,friend);
+		return next();
+	};
+	// Get the list of all Friend
+	that.getlocation = function(req, res, next) {
+		console.log("get list of friends->"+req.params.id);
+		var items=[];
+		var check=0;
+		 dbase.retrieveFriends(req.params.id,function(friends) {
+			if(friends!=null){
+			for(var i=0;i<friends.length;i++){
+				console.log("in loop");	
+			if(req.params.id===friends[i].id1){
+		    dblocation.retrieveLocationById(friends[i].id2, function(location) {
+			check=check+1;
+				if(location != null && location.length>0) {
+				console.log("in setting ");
+				console.log(location[0].long);
+				items.push(location[0]);
+				console.log(check);
+				if(check===friends.length){
+				res.send(200,items);
+}
+			}else{
+				if(check===friends.length){
+				res.send(200,items);
+			}
+			} 
+		});
+			}else{			
+			dblocation.retrieveLocationById(friends[i].id1, function(location) {
+			check=check+1;
+				if(location != null && location.length>0) {
+				//add into list
+				items.push(location[0]);
+	            console.log(check);
+				if(check===friends.length){
+				res.send(200,items);
+			}
+			}else{
+				if(check===friends.length){
+				res.send(200,items);
+			}
+			}
+				});
+			}
+				};
+		}
+	});
 		return next();
 	};
     
+	
+
     // Get the list of all Friend
 	that.getPending = function(req, res, next) {
 		dbase.retrievePendingFriends(req.params.id1,function(friends) {
@@ -23,12 +81,20 @@ function FriendController() {
 	// Get single Friend
 	that.getById = function(req, res, next) {
 		friend = dbase.retrieveFriend(req.params.id1,req.params.id2, function(friend) {
-			if(friend != null) {
+			if(friend != null && friend.length>0) {
 
-				//res.send(200, friend);
+				res.send(200, friend);
 			} else {
-				res.send(404, "Friend not found");
-			}
+		friend = dbase.retrieveFriend(req.params.id2,req.params.id1, function(friend) {
+	if(friend!=null){
+		res.send(200,friend);
+	}else{
+			res.send(404, "Friend not found");
+		
+	}
+		});
+		
+				}
 		});
 		
 		return next();
@@ -59,15 +125,16 @@ function FriendController() {
 	
 	// Update a friend
 	that.put = function(req, res, next) {
-		
+		console.log("id in updating" +req.params.id);
+		//console.log("id in updating" +req.body.id);
 		friend = {
-			"_id" : req.params.id,
-            "id1" : req.params.id1,
-            "id2" : req.params.id2,
-            "firstName": req.params.firstname,
-			"lastName": req.params.lastname,
-			"firstname2" : req.params.firstname2,
-			"lastname2": req.params.lastname2,
+			"_id" : req.body.id,
+            "id1" : req.body.id1,
+            "id2" : req.body.id2,
+            "firstname": req.body.firstname,
+			"lastname": req.body.lastname,
+			"firstname2" : req.body.firstname2,
+			"lastname2": req.body.lastname2,
             "pending":0
 		}
 		

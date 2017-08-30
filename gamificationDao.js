@@ -6,8 +6,8 @@ function mongoCRUD() {
 	that = this;
 	var collection;
 	
-	//mongo.connect("mongodb://localhost:27017/laware", function(err, db){
-	mongo.connect("mongodb://arslanyasinwattoo:Arslan-03144214002@laware-shard-00-00-xq7dc.mongodb.net:27017,laware-shard-00-01-xq7dc.mongodb.net:27017,laware-shard-00-02-xq7dc.mongodb.net:27017/Laware?ssl=true&replicaSet=Laware-shard-0&authSource=admin", function(err, db){
+//	mongo.connect("mongodb://localhost:27017/laware", function(err, db){
+mongo.connect("mongodb://arslanyasinwattoo:Arslan-03144214002@laware-shard-00-00-xq7dc.mongodb.net:27017,laware-shard-00-01-xq7dc.mongodb.net:27017,laware-shard-00-02-xq7dc.mongodb.net:27017/Laware?ssl=true&replicaSet=Laware-shard-0&authSource=admin", function(err, db){
 	if(err) { 
 			return console.dir(err); 
 		}
@@ -24,9 +24,10 @@ function mongoCRUD() {
 	/**
 	*	Loads the gamification list from the database collection
 	*/
-	that.retrieveGamification = function(callback) {
+	that.retrieveGamification = function(id,callback) {
 		console.log("Retrieving gamification list...");
-		collection.find().toArray(function(err, items) {
+		var gamify={'userId':id};
+		collection.find(gamify).toArray(function(err, items) {
 			callback(items);
 		});
 	}

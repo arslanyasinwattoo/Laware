@@ -11,6 +11,20 @@ function CheckInController() {
 		});		
 		return next();
 	};
+		that.getByUserId = function(req, res, next) {
+		checkin = dbase.retrieveCheckInByUser(req.params.id, function(checkin) {
+			if(checkin != null) {
+				res.send(200, checkin);
+			} else {
+				res.send(404, "checkin not found");
+			}
+		});
+		
+		return next();
+	};
+
+
+
 	/*
 	// Get single checkin
 	that.getByIdTopVistors = function(req, res, next) {
@@ -86,8 +100,8 @@ function CheckInController() {
                 venueId:req.body.venueId,
 				userId:req.body.userId,
 				venueName:req.body.venueName,
-                firstName : req.body.firstName,
-				lastName : req.body.lastName,
+                firstName :req.body.firstName,
+				lastName :req.body.lastName,
 			};			
 
 			dbase.saveCheckIn(checkin, function(checkin){

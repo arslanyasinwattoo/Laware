@@ -38,8 +38,14 @@ function mongoCRUD() {
         console.log("Retrieving friends list...");
 		friend = {	'id1':id,'pending':0};
 		friend2={'id2':id,'pending':0};	
-        collection.find(friend||friend2).toArray(function(err, items) {
-			callback(items);
+        collection.find(friend).toArray(function(err, items) {
+		 collection.find(friend2).toArray(function(err, itemss) {
+		for(var i=0;i<itemss.length;i++){
+					items.push(itemss[i]); 
+			}
+					callback(items); 
+		});
+			
 		});
 	}
 	
@@ -48,9 +54,9 @@ function mongoCRUD() {
 	 */ 
 	that.retrieveFriend = function(id1,id2, callback) {		
 		// create ObjectId as identification criterion
-		friend = {	'id1':id1, 'id2':id2};
-		friend2 = {	'id1':id2, 'id2':id1};	
-		collection.findOne(friend||friend2, function(err, items) {
+	friend = {	'id1':id1, 'id2':id2};
+		
+		collection.find(friend).toArray(function(err, items) {
 			callback(items);
 		});		
 	}
@@ -76,7 +82,7 @@ function mongoCRUD() {
 	 */
 	that.updateFriend = function(friend, callback) {
 		collection.update({"_id":new ObjectId(friend._id)}, 
-					      {$set:{id1:friend.id1,id2:friend.id2,firstName:friend.firstName,lastName:friend.lastName,firstName2:friend.firstName2,lastName2:friend.lastName2}}, {w:1}, 
+					      {$set:{id1:friend.id1,id2:friend.id2,firstname:friend.firstname,lastname:friend.lastname,firstname2:friend.firstname2,lastname2:friend.lastname2,pending:friend.pending}}, {w:1}, 
 		function(err, result) {
 			if(err) {
 				console.log(err);

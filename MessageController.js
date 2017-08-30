@@ -13,6 +13,7 @@ function MessageController() {
 	};
 	// Get list of messages between friends
 	that.getById = function(req, res, next) {
+		console.log("get by id messages"+req.params.id);
 		messages = dbase.retrieveMessagesByFriendId(req.params.id,function(messages) {
 			if(messages != null) {
 				res.send(200, messages);
@@ -25,12 +26,12 @@ function MessageController() {
 	// Create a new message
 	that.post = function(req, res, next) {
 		console.log(req.body);
-		if(!req.body.hasOwnProperty('id1','id2','firstname','lastname','message','time','date')) {
+		if(!req.body.hasOwnProperty('friendId','userId','firstname','lastname','message','time','date')) {
 			res.send(500, "Insufficient parameters, ids required!"); 	// Internal Server Error
 		} else {
 			var message = {
-                friendsId:req.body.id1,
-                userId:req.body.id2,
+                friendsId:req.body.friendId,
+                userId:req.body.userId,
                 firstname : req.body.firstname,
 				lastname : req.body.lastname,
                 message:req.body.message,

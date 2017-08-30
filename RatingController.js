@@ -54,15 +54,18 @@ function RatingController() {
 	that.post = function(req, res, next) {
 
 		console.log(req.body);
-        if(!req.body.hasOwnProperty('venueId','userId','venueName','firstname','lastname','rating')) {
+        if(!req.body.hasOwnProperty('venueId','userId','venueName','firstname','lastname','long','lat','address','rating')) {
 			res.send(500, "Insufficient parameters, "); 	// Internal Server Error
 		} else {
 			var rating = {
                 venueId:req.body.venueId,
 				userId:req.body.userId,
 				venueName:req.body.venueName,
-                firstName : req.body.firstName,
-				lastName : req.body.lastName,
+                firstName : req.body.firstname,
+				lastName : req.body.lastname,
+				long:req.body.long,
+				lat:req.body.lat,
+				address:req.body.address,
                 rating: req.body.rating
             };			
 
@@ -84,6 +87,10 @@ function RatingController() {
 			"venueName":req.body.venueName,
             "firstName": req.params.firstName,
 			"lastName": req.params.lastName,
+			"long":req.params.long,
+			"lat":req.params.lat,
+			"address":req.params.address,
+            
             "rating" : req.params.rating
         }
 		

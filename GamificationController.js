@@ -1,4 +1,4 @@
-var dbase = require("./messageDao");
+var dbase = require("./gamificationDao");
 
 function GamificationController() {
 
@@ -13,7 +13,7 @@ function GamificationController() {
 	};
 	// Get list of gamification of user
 	that.getById = function(req, res, next) {
-		gamification = dbase.retrieveGamificationById(req.params.id,function(gamification) {
+		gamification = dbase.retrieveGamification(req.params.id,function(gamification) {
 			if(gamification != null) {
 				res.send(200, gamification);
 			} else {
@@ -33,17 +33,24 @@ function GamificationController() {
                 badgeName:req.body.badgeName
 			};			
 			gamifiy = dbase.retrieveGamificationByBadgeId(gamification.userId,gamification.badgeName,function(gamifiy) {
-			if(gamifiy != null) {
+			if(gamifiy != null && gamifiy.length>0) {
 		//checks if badgename is unique
-		if(gamifiy.badgeName!=gamification.badgeName){
+		console.log("in gamify");
+		var check=0;
+		for(var i=0;i<gamifiy.length;i++){
+		if(gamifiy[i].badgeName===gamification.badgeName){
+		check=1;		
+		}	
+		}
 	//if unique then add badge name
-			dbase.saveGamification(gamification, function(gamification){
+	if(check===0){	
+	dbase.saveGamification(gamification, function(gamification){
 				console.log('gamification added: _id '+gamification._id+' userID:'+gamification.userId+' badgeName'+gamification.badgeName);
 				res.send(201,gamification);	// Send "Created" code and the friend object			
 			});
 		}else{
 			//if badge name already exists return request object
-	res.send(200, gamification);
+			res.send(200, gamification);
 		}
 		} else {
 			// if no entry was found in db then add new 
