@@ -7,7 +7,7 @@ function UserController() {
    console.log("checkin");
 		dbase.checkLogin(emailId,password,function(user){
 				//	res.send(200, users);
-				console.log("checking email"+user.emailId)
+				//console.log("checking email"+user.emailId)
 				callback(user);
 
 		});		
