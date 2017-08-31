@@ -1,7 +1,5 @@
 var mongo  = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
-var async = require('asyncawait/async');
-var await = require('asyncawait/await');
 
 function mongoCRUD() {
 	
@@ -41,12 +39,12 @@ function mongoCRUD() {
 		friend = {	'id1':id,'pending':0};
 		friend2={'id2':id,'pending':0};	
       await(collection.find(friend).toArray(function(err, items) {
-		await(collection.find(friend2).toArray(function(err, itemss) {
+		collection.find(friend2).toArray(function(err, itemss) {
 		for(var i=0;i<itemss.length;i++){
 					items.push(itemss[i]); 
 			}
 					callback(items); 
-		}))
+		})
 			
 		}))
 
