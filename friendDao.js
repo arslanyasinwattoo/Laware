@@ -1,5 +1,8 @@
 var mongo  = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
+var async = require('asyncawait/async');
+var await = require('asyncawait/await');
+
 
 function mongoCRUD() {
 	
