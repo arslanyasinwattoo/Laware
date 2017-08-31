@@ -15,8 +15,8 @@ function FriendController() {
 			res.send(200, friends);
 		});		
 		}
-	var friend=[];
-	res.send(200,friend);
+//	var friend=[];
+//	res.send(200,friend);
 		return next();
 	};
 	// Get the list of all Friend
